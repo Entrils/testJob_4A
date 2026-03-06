@@ -7,4 +7,16 @@
 body {
   margin: 0;
   min-width: 320px;
+  font-family: var(--font-montserrat), sans-serif;
+}
+
+@keyframes offerTimerBlink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0.35;
+  }
 }
