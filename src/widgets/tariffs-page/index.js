@@ -1,1 +1,1 @@
-export { TariffsPage } from "./ui/tariffs-page";
+export { TariffsPage } from "./ui/tariffs-page.jsx";

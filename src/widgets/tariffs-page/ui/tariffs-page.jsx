@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { OfferBanner } from "./offer-banner.jsx";
 
 export function TariffsPage({ initialTariffs, initialError }) {
   useEffect(() => {
@@ -21,5 +22,9 @@ export function TariffsPage({ initialTariffs, initialError }) {
     );
   }, [initialError, initialTariffs]);
 
-  return null;
+  return (
+    <main>
+      <OfferBanner />
+    </main>
+  );
 }
