@@ -8,42 +8,42 @@ export function OfferBanner({ formattedTime, isExpired, isAlert }) {
   const [minutes = "00", seconds = "00"] = formattedTime.split(":");
 
   return (
-    <header className="flex h-[74px] w-full flex-col items-center justify-center gap-[3px] bg-[#1D6B4F] px-2 max-[320px]:h-[68px] md:h-[103px] md:gap-[4px] md:bg-[#1D5B43] md:py-[8px]">
+    <header className="flex h-[85px] w-full flex-col items-center justify-center gap-[4px] bg-[#1D5B43] px-[16px] py-[8px] max-[320px]:h-[74px] max-[320px]:px-[16px] md:h-[103px] md:gap-[4px] md:bg-[#1D5B43] md:py-[8px]">
       <p
-        className="text-center text-[11px] font-semibold leading-[130%] text-white max-[320px]:text-[10px] md:h-[31px] md:w-[447px] md:text-[24px]"
+        className="h-[23px] w-[336px] text-center text-[18px] font-semibold leading-[130%] text-white max-[320px]:h-[18px] max-[320px]:w-[261px] max-[320px]:text-[14px] md:h-[31px] md:w-[447px] md:text-[24px]"
         style={{ fontFamily: "var(--font-montserrat)" }}
       >
         {OFFER_TITLE}
       </p>
 
       <div
-        className="flex items-center gap-[6px] md:grid md:h-[52px] md:w-[157px] md:grid-cols-[14px_113px_14px] md:items-center md:justify-center md:gap-[8px]"
+        className="grid h-[42px] w-[136px] grid-cols-[14px_92px_14px] items-center justify-center gap-[8px] max-[320px]:h-[36px] max-[320px]:w-[126px] max-[320px]:grid-cols-[14px_82px_14px] max-[320px]:gap-[8px] md:h-[52px] md:w-[157px] md:grid-cols-[14px_113px_14px] md:gap-[8px]"
         style={{
           animation: isAlert ? "offerTimerBlink 1s steps(1, end) infinite" : undefined
         }}
       >
         <span
-          className="inline-flex h-[11px] w-[11px] shrink-0 items-center justify-center text-[11px] leading-none md:h-[14px] md:w-[14px] md:text-[14px]"
+          className="inline-flex h-[14px] w-[14px] shrink-0 items-center justify-center rounded-[0.71px] text-[14px] leading-none md:h-[14px] md:w-[14px] md:text-[14px]"
           style={{ color: timerColor }}
         >
           {STAR}
         </span>
 
         <div
-          className="flex items-center justify-center gap-[4px] text-[39px] font-bold leading-[110%] tracking-[0] max-[320px]:text-[34px] md:h-[52px] md:w-[113px] md:gap-[6px] md:text-[40px]"
+          className="flex h-[42px] w-[92px] items-center justify-between gap-0 text-[32px] font-bold leading-[110%] tracking-[0] max-[320px]:h-[36px] max-[320px]:w-[82px] max-[320px]:text-[28px] md:h-[52px] md:w-[113px] md:text-[40px]"
           style={{
             color: timerColor,
             fontFamily: "var(--font-raleway)",
-            fontVariantNumeric: "lining-nums proportional-nums"
+            fontVariantNumeric: "lining-nums tabular-nums"
           }}
         >
-          <span>{minutes}</span>
-          <span>:</span>
-          <span>{seconds}</span>
+          <span className="inline-flex w-[36px] justify-center max-[320px]:w-[32px] md:w-[44px]">{minutes}</span>
+          <span className="inline-flex w-[8px] justify-center max-[320px]:w-[6px] md:w-[13px]">:</span>
+          <span className="inline-flex w-[36px] justify-center max-[320px]:w-[32px] md:w-[44px]">{seconds}</span>
         </div>
 
         <span
-          className="inline-flex h-[11px] w-[11px] shrink-0 items-center justify-center text-[11px] leading-none md:h-[14px] md:w-[14px] md:text-[14px]"
+          className="inline-flex h-[14px] w-[14px] shrink-0 items-center justify-center rounded-[0.71px] text-[14px] leading-none md:h-[14px] md:w-[14px] md:text-[14px]"
           style={{ color: timerColor }}
         >
           {STAR}
