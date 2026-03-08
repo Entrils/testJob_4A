@@ -1,14 +1,32 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 const OFFER_TITLE = "Успейте открыть пробную неделю";
 const STAR = "✦";
 
 export function OfferBanner({ formattedTime, isExpired, isAlert }) {
+  const [isScrolled, setIsScrolled] = useState(false);
   const timerColor = isExpired ? "#FFFFFF" : isAlert ? "#FF4E4E" : "#FFBB00";
   const [minutes = "00", seconds = "00"] = formattedTime.split(":");
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
-    <header className="fixed left-1/2 top-0 z-[70] flex h-[85px] w-full max-w-[375px] -translate-x-1/2 flex-col items-center justify-center gap-[4px] bg-[#1D5B43] px-[16px] py-[8px] max-[320px]:h-[74px] max-[320px]:max-w-[320px] max-[320px]:px-[16px] md:h-[103px] md:max-w-[1920px] md:gap-[4px] md:rounded-t-[60px] md:bg-[#1D5B43] md:py-[8px]">
+    <header
+      className={`fixed left-1/2 top-0 z-[70] flex h-[85px] w-full max-w-[375px] -translate-x-1/2 flex-col items-center justify-center gap-[4px] bg-[#1D5B43] px-[16px] py-[8px] max-[320px]:h-[74px] max-[320px]:max-w-[320px] max-[320px]:px-[16px] md:h-[103px] md:max-w-[1920px] md:gap-[4px] md:bg-[#1D5B43] md:py-[8px] ${isScrolled ? "md:rounded-none" : "md:rounded-t-[60px]"}`}
+    >
       <p
         className="h-[23px] w-[336px] text-center text-[18px] font-semibold leading-[130%] text-white max-[320px]:h-[18px] max-[320px]:w-[261px] max-[320px]:text-[14px] md:h-[31px] md:w-[447px] md:text-[24px]"
         style={{ fontFamily: "var(--font-montserrat)" }}
@@ -37,9 +55,13 @@ export function OfferBanner({ formattedTime, isExpired, isAlert }) {
             fontVariantNumeric: "lining-nums tabular-nums"
           }}
         >
-          <span className="inline-flex w-[36px] justify-center max-[320px]:w-[32px] md:w-[44px]">{minutes}</span>
+          <span className="inline-flex w-[36px] justify-center max-[320px]:w-[32px] md:w-[44px]">
+            {minutes}
+          </span>
           <span className="inline-flex w-[8px] justify-center max-[320px]:w-[6px] md:w-[13px]">:</span>
-          <span className="inline-flex w-[36px] justify-center max-[320px]:w-[32px] md:w-[44px]">{seconds}</span>
+          <span className="inline-flex w-[36px] justify-center max-[320px]:w-[32px] md:w-[44px]">
+            {seconds}
+          </span>
         </div>
 
         <span

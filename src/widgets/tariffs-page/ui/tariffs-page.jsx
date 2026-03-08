@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import Image from "next/image";
 import { gsap } from "gsap";
 import { useOfferTimer } from "@/features/offer-timer/model/use-offer-timer";
 import { usePurchaseConsent } from "@/features/purchase-consent/model/use-purchase-consent";
@@ -460,6 +461,7 @@ function TariffCard({
 }
 
 export function TariffsPage({ initialTariffs, initialError }) {
+  const pageRef = useRef(null);
   const { formattedTime, isExpired, isAlert } = useOfferTimer();
   const { selectedTariff, selectedTariffId, selectTariff } =
     useTariffSelection(initialTariffs);
@@ -491,8 +493,49 @@ export function TariffsPage({ initialTariffs, initialError }) {
     setBuyMessage(`${BUY_SELECTED_PREFIX}${selectedTariff.period}`);
   }
 
+  useEffect(() => {
+    if (!pageRef.current || typeof window === "undefined") {
+      return undefined;
+    }
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return undefined;
+    }
+
+    const ctx = gsap.context(() => {
+      const introTargets = pageRef.current.querySelectorAll("[data-intro]");
+
+      if (introTargets.length === 0) {
+        return;
+      }
+
+      gsap.set(introTargets, {
+        autoAlpha: 0,
+        y: 24,
+        filter: "blur(6px)"
+      });
+
+      gsap.to(introTargets, {
+        duration: 0.82,
+        autoAlpha: 1,
+        y: 0,
+        filter: "blur(0px)",
+        ease: "power3.out",
+        stagger: 0.09,
+        delay: 0.08
+      });
+    }, pageRef);
+
+    return () => {
+      ctx.revert();
+    };
+  }, []);
+
   return (
-    <main className="min-h-screen bg-[radial-gradient(circle_at_top,#243038_0%,#141C22_62%)] text-[#E9EEF2] md:flex md:items-start md:justify-center md:bg-none md:bg-white md:py-0">
+    <main
+      ref={pageRef}
+      className="min-h-screen bg-[radial-gradient(circle_at_top,#243038_0%,#141C22_62%)] text-[#E9EEF2] md:flex md:items-start md:justify-center md:bg-none md:bg-white md:py-0"
+    >
       <section className="mx-auto w-full max-w-[375px] overflow-x-hidden bg-[#1E262D] max-[320px]:max-w-[320px] md:relative md:h-[1621px] md:w-[1920px] md:max-w-none md:rounded-[60px] md:border md:border-[#2E3941]">
         <OfferBanner
           formattedTime={formattedTime}
@@ -502,17 +545,22 @@ export function TariffsPage({ initialTariffs, initialError }) {
         <div className="h-[85px] max-[320px]:h-[74px] md:h-[103px]" aria-hidden />
 
         <div className="px-[16px] pb-[24px] pt-[20px] max-[320px]:px-[16px] max-[320px]:pt-[20px] md:px-0 md:pb-[40px] md:pt-[50px]">
-          <h1 className="h-[52px] w-[312px] text-[24px] font-bold leading-[110%] tracking-[0.01em] text-[#E9EEF2] max-[320px]:h-[48px] max-[320px]:w-[288px] max-[320px]:text-[22px] max-[320px]:leading-[110%] max-[320px]:tracking-[0.01em] md:absolute md:left-[352px] md:top-[153px] md:h-[44px] md:w-[826px] md:text-[40px] md:font-bold md:leading-[110%] md:tracking-[0.01em] md:whitespace-nowrap">
+          <h1 data-intro className="h-[52px] w-[312px] text-[24px] font-bold leading-[110%] tracking-[0.01em] text-[#E9EEF2] max-[320px]:h-[48px] max-[320px]:w-[288px] max-[320px]:text-[22px] max-[320px]:leading-[110%] max-[320px]:tracking-[0.01em] md:absolute md:left-[352px] md:top-[153px] md:h-[44px] md:w-[826px] md:text-[40px] md:font-bold md:leading-[110%] md:tracking-[0.01em] md:whitespace-nowrap">
             {TITLE_TEXT}
             {" "}
             <span className="text-[#FDB056]">{TITLE_ACCENT}</span>
           </h1>
 
-          <div className="mt-[20px] max-[320px]:mt-[24px] md:absolute md:left-[352px] md:top-[307px] md:grid md:h-[867px] md:w-[1216px] md:grid-cols-[380.7277px_835.2723px] md:items-start">
+          <div data-intro className="mt-[20px] max-[320px]:mt-[24px] md:absolute md:left-[352px] md:top-[307px] md:grid md:h-[867px] md:w-[1216px] md:grid-cols-[380.7277px_835.2723px] md:items-start">
             <div className="flex justify-center max-[320px]:justify-start max-[320px]:pl-[94px] md:justify-start md:pt-[52px]">
-              <img
+              <Image
                 src="/assets/man.svg"
                 alt="Мужчина"
+                width={381}
+                height={767}
+                sizes="(max-width: 320px) 99px, (max-width: 375px) 124px, 381px"
+                priority
+                draggable={false}
                 className="h-[250px] w-[124.0964px] max-[320px]:h-[200px] max-[320px]:w-[99.2771px] md:h-[767px] md:w-[380.7277px]"
               />
             </div>
@@ -656,7 +704,7 @@ export function TariffsPage({ initialTariffs, initialError }) {
             </div>
           </div>
 
-          <section className="mt-[24px] flex h-[186px] w-[343px] flex-col gap-[10px] rounded-[20px] border border-[#484D4E] bg-[#202930] p-[12px] max-[320px]:h-[194px] max-[320px]:w-[288px] max-[320px]:rounded-[20px] max-[320px]:p-[12px] md:absolute md:left-[352px] md:top-[1240px] md:flex md:h-[231px] md:w-[1216px] md:flex-col md:gap-[30px] md:rounded-[30px] md:border md:border-[#484D4E] md:bg-[#202930] md:p-[20px]">
+          <section data-intro className="mt-[24px] flex h-[186px] w-[343px] flex-col gap-[10px] rounded-[20px] border border-[#484D4E] bg-[#202930] p-[12px] max-[320px]:h-[194px] max-[320px]:w-[288px] max-[320px]:rounded-[20px] max-[320px]:p-[12px] md:absolute md:left-[352px] md:top-[1240px] md:flex md:h-[231px] md:w-[1216px] md:flex-col md:gap-[30px] md:rounded-[30px] md:border md:border-[#484D4E] md:bg-[#202930] md:p-[20px]">
             <div className="flex h-[44px] w-[294px] items-start gap-[10px] rounded-[30px] border border-[#81FE95] bg-[#2D3233] pb-[12px] pl-[18px] pr-[18px] pt-[10px] text-[#81FE95] max-[320px]:h-[41px] max-[320px]:w-[265px] md:flex md:h-[68px] md:w-[461px] md:items-start md:gap-[10px] md:rounded-[30px] md:border md:border-[#81FE95] md:bg-[#2D3233] md:pb-[18px] md:pl-[30px] md:pr-[30px] md:pt-[16px] md:text-[#81FE95]">
               <span className="h-[22px] w-[258px] whitespace-nowrap text-[18px] font-medium leading-[120%] text-[#81FE95] max-[320px]:h-[19px] max-[320px]:w-[229px] max-[320px]:text-[16px] md:block md:h-[34px] md:w-[401px] md:whitespace-nowrap md:text-[28px] md:leading-[120%]">
                 {GUARANTEE_TITLE}
