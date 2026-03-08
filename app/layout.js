@@ -1,5 +1,6 @@
 import { Montserrat, Raleway } from "next/font/google";
 import "./globals.css";
+import { Providers } from "./providers";
 
 const montserrat = Montserrat({
   subsets: ["latin", "cyrillic"],
@@ -21,7 +22,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="ru">
-      <body className={`${montserrat.variable} ${raleway.variable}`}>{children}</body>
+      <body className={`${montserrat.variable} ${raleway.variable}`}>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }

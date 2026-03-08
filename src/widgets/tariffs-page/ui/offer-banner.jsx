@@ -8,7 +8,7 @@ export function OfferBanner({ formattedTime, isExpired, isAlert }) {
   const [minutes = "00", seconds = "00"] = formattedTime.split(":");
 
   return (
-    <header className="flex h-[85px] w-full flex-col items-center justify-center gap-[4px] bg-[#1D5B43] px-[16px] py-[8px] max-[320px]:h-[74px] max-[320px]:px-[16px] md:h-[103px] md:gap-[4px] md:bg-[#1D5B43] md:py-[8px]">
+    <header className="fixed left-1/2 top-0 z-[70] flex h-[85px] w-full max-w-[375px] -translate-x-1/2 flex-col items-center justify-center gap-[4px] bg-[#1D5B43] px-[16px] py-[8px] max-[320px]:h-[74px] max-[320px]:max-w-[320px] max-[320px]:px-[16px] md:h-[103px] md:max-w-[1920px] md:gap-[4px] md:rounded-t-[60px] md:bg-[#1D5B43] md:py-[8px]">
       <p
         className="h-[23px] w-[336px] text-center text-[18px] font-semibold leading-[130%] text-white max-[320px]:h-[18px] max-[320px]:w-[261px] max-[320px]:text-[14px] md:h-[31px] md:w-[447px] md:text-[24px]"
         style={{ fontFamily: "var(--font-montserrat)" }}
