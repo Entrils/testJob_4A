@@ -6,13 +6,17 @@ import { getSiteUrlObject } from "@/shared/config/seo";
 const montserrat = Montserrat({
   subsets: ["latin", "cyrillic"],
   variable: "--font-montserrat",
-  weight: ["400", "500", "600", "700"]
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+  preload: true
 });
 
 const raleway = Raleway({
   subsets: ["latin", "cyrillic"],
   variable: "--font-raleway",
-  weight: ["400", "500", "600", "700"]
+  weight: ["700"],
+  display: "swap",
+  preload: true
 });
 
 export const metadata = {

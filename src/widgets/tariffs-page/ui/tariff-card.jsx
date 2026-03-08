@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
 import { formatPrice } from "@/shared/lib/formatters/format-price";
 import { HIT_LABEL, RUB } from "../config/texts";
 
@@ -110,73 +109,87 @@ export function TariffCard({
       return undefined;
     }
 
-    const ctx = gsap.context(() => {
-      const oldTargets = cardRef.current.querySelectorAll("[data-old-price]");
-      const discountTargets = cardRef.current.querySelectorAll("[data-discount-badge]");
-      const currentTargets = cardRef.current.querySelectorAll("[data-current-price]");
-      const timeline = gsap.timeline({ delay: animationIndex * 0.11 });
+    let isMounted = true;
+    let ctx = null;
 
-      if (currentTargets.length > 0) {
-        gsap.set(currentTargets, {
-          autoAlpha: 0,
-          y: 12,
-          scale: 0.9,
-          filter: "blur(4px)"
-        });
+    async function runPriceSwitchAnimation() {
+      const { gsap } = await import("gsap");
+
+      if (!isMounted || !cardRef.current) {
+        return;
       }
 
-      if (oldTargets.length > 0) {
-        timeline.to(
-          oldTargets,
-          {
-            duration: 0.48,
+      ctx = gsap.context(() => {
+        const oldTargets = cardRef.current.querySelectorAll("[data-old-price]");
+        const discountTargets = cardRef.current.querySelectorAll("[data-discount-badge]");
+        const currentTargets = cardRef.current.querySelectorAll("[data-current-price]");
+        const timeline = gsap.timeline({ delay: animationIndex * 0.11 });
+
+        if (currentTargets.length > 0) {
+          gsap.set(currentTargets, {
             autoAlpha: 0,
-            y: -18,
-            scale: 0.82,
-            rotation: -6,
-            filter: "blur(4px)",
-            ease: "power3.inOut",
-            stagger: 0.02
-          },
-          0
-        );
-      }
+            y: 12,
+            scale: 0.9,
+            filter: "blur(4px)"
+          });
+        }
 
-      if (discountTargets.length > 0) {
-        timeline.to(
-          discountTargets,
-          {
-            duration: 0.52,
-            autoAlpha: 0,
-            y: -22,
-            scale: 0.7,
-            rotation: 14,
-            filter: "blur(3px)",
-            ease: "power2.inOut"
-          },
-          0.04
-        );
-      }
+        if (oldTargets.length > 0) {
+          timeline.to(
+            oldTargets,
+            {
+              duration: 0.48,
+              autoAlpha: 0,
+              y: -18,
+              scale: 0.82,
+              rotation: -6,
+              filter: "blur(4px)",
+              ease: "power3.inOut",
+              stagger: 0.02
+            },
+            0
+          );
+        }
 
-      if (currentTargets.length > 0) {
-        timeline.to(
-          currentTargets,
-          {
-            duration: 0.62,
-            autoAlpha: 1,
-            y: 0,
-            scale: 1,
-            filter: "blur(0px)",
-            ease: "back.out(1.6)",
-            stagger: 0.03
-          },
-          0.18
-        );
-      }
-    }, cardRef);
+        if (discountTargets.length > 0) {
+          timeline.to(
+            discountTargets,
+            {
+              duration: 0.52,
+              autoAlpha: 0,
+              y: -22,
+              scale: 0.7,
+              rotation: 14,
+              filter: "blur(3px)",
+              ease: "power2.inOut"
+            },
+            0.04
+          );
+        }
+
+        if (currentTargets.length > 0) {
+          timeline.to(
+            currentTargets,
+            {
+              duration: 0.62,
+              autoAlpha: 1,
+              y: 0,
+              scale: 1,
+              filter: "blur(0px)",
+              ease: "back.out(1.6)",
+              stagger: 0.03
+            },
+            0.18
+          );
+        }
+      }, cardRef);
+    }
+
+    runPriceSwitchAnimation();
 
     return () => {
-      ctx.revert();
+      isMounted = false;
+      ctx?.revert();
     };
   }, [animationIndex, isExpired, isPriceSwitching]);
 

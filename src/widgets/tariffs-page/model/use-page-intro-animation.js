@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import { gsap } from "gsap";
 
 export function usePageIntroAnimation(pageRef) {
   useEffect(() => {
@@ -13,32 +12,46 @@ export function usePageIntroAnimation(pageRef) {
       return undefined;
     }
 
-    const ctx = gsap.context(() => {
-      const introTargets = pageRef.current.querySelectorAll("[data-intro]");
+    let isMounted = true;
+    let ctx = null;
 
-      if (introTargets.length === 0) {
+    async function runAnimation() {
+      const { gsap } = await import("gsap");
+
+      if (!isMounted || !pageRef.current) {
         return;
       }
 
-      gsap.set(introTargets, {
-        autoAlpha: 0,
-        y: 24,
-        filter: "blur(6px)"
-      });
+      ctx = gsap.context(() => {
+        const introTargets = pageRef.current.querySelectorAll("[data-intro]");
 
-      gsap.to(introTargets, {
-        duration: 0.82,
-        autoAlpha: 1,
-        y: 0,
-        filter: "blur(0px)",
-        ease: "power3.out",
-        stagger: 0.09,
-        delay: 0.08
-      });
-    }, pageRef);
+        if (introTargets.length === 0) {
+          return;
+        }
+
+        gsap.set(introTargets, {
+          autoAlpha: 0,
+          y: 24,
+          filter: "blur(6px)"
+        });
+
+        gsap.to(introTargets, {
+          duration: 0.82,
+          autoAlpha: 1,
+          y: 0,
+          filter: "blur(0px)",
+          ease: "power3.out",
+          stagger: 0.09,
+          delay: 0.08
+        });
+      }, pageRef);
+    }
+
+    runAnimation();
 
     return () => {
-      ctx.revert();
+      isMounted = false;
+      ctx?.revert();
     };
   }, [pageRef]);
 }
